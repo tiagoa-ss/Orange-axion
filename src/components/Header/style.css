@@ -33,4 +33,10 @@
 .navLink {
 	font-size: 1.125rem;
 	font-weight: 300;
+	text-decoration: none;
+	color: #4a4a4a;
+}
+
+.navLink:focus {
+	font-weight: 700;
 }

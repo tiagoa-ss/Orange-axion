@@ -7,10 +7,11 @@ import './style.css'
 
 export function CardDisplay() {
 	const [cards, setCards] = useState([])
+	const path = window.location.pathname
 
 	useEffect(() => {
 		axios
-			.get('http://localhost:1337/foods')
+			.get(`http://localhost:1337${path}`)
 			.then((res) => {
 				console.log(res.data)
 				setCards(res.data)
@@ -18,13 +19,23 @@ export function CardDisplay() {
 			.catch((err) => {
 				console.log(err)
 			})
-	}, [])
+	}, [path])
+
+	function handleTitle(path) {
+		if (path === '/foods') {
+			return 'FOODS'
+		} else if (path === '/people') {
+			return 'PEOPLE'
+		} else if (path === '/places') {
+			return 'PLACES'
+		}
+	}
 
 	return (
 		<>
 			<Header />
 			<div className='cardDisplay'>
-				<p className='cardTitle'>LIST OF FOODS</p>
+				<p className='cardTitle'>LIST OF {handleTitle(path)}</p>
 				<div className='cardGrid'>
 					{cards.map((card) => {
 						return (
