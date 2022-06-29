@@ -1,17 +1,38 @@
 import bgImage from '../../../assets/bg.jpg'
 import mailIcon from '../../../assets/mail.png'
 import lockIcon from '../../../assets/lock.png'
+import { useContext, useEffect } from 'react'
+import { AuthContext } from '../../context/AuthContext'
 
 import './style.css'
+import { useNavigate } from 'react-router-dom'
 
 export function Home() {
+	const auth = useContext(AuthContext)
+	const navigate = useNavigate()
+
+	useEffect(() => {
+		if (auth.email != null) {
+			navigate('/foods')
+		}
+	}, [auth.email])
+
+	async function onFinish(e) {
+		try {
+			await auth.authenticate(e.target[0].value, e.target[1].value)
+			navigate('/foods')
+		} catch (error) {
+			console.log(error)
+		}
+	}
+
 	return (
 		<div className='home'>
 			<img src={bgImage} alt='' className='bgImage' />
 			<div className='login card'>
 				<div className='container'>
 					<h1 id='homeTitle'>ORANGE</h1>
-					<form>
+					<form onSubmit={onFinish}>
 						<div className='input-email input-icon'>
 							<label htmlFor='email' className='labelInput'>
 								Email

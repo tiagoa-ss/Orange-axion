@@ -1,19 +1,23 @@
-import axios from 'axios'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { Header } from '../../components/Header'
+import { AuthContext } from '../../context/AuthContext'
+import { Api } from '../../services/api'
 import { urlBuilder } from '../../utils/urlBuilder'
 
 import './style.css'
 
 export function CardDisplay() {
 	const [cards, setCards] = useState([])
+	const auth = useContext(AuthContext)
 	const path = window.location.pathname
 
 	useEffect(() => {
-		axios
-			.get(`http://localhost:1337${path}`)
+		Api.get(`http://localhost:1337${path}`, {
+			headers: {
+				Authorization: `Bearer ${auth.token}`,
+			},
+		})
 			.then((res) => {
-				console.log(res.data)
 				setCards(res.data)
 			})
 			.catch((err) => {
@@ -45,14 +49,6 @@ export function CardDisplay() {
 							</div>
 						)
 					})}
-					{/* modelo de card
-					 <div className='cardGridItem'>
-						<img
-							src='https://t1.rg.ltmcdn.com/pt/posts/1/5/1/bife_na_chapa_2151_orig.jpg'
-							alt=''
-						/>
-						<p className='cardText'>Bife</p>
-					</div> */}
 				</div>
 			</div>
 		</>
